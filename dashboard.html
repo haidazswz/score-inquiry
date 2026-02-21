@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>中国海洋大学研究生招生平台 - 成绩查询</title>
+    <style>
+        /* --- 基础重置 --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Microsoft YaHei", SimSun, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- 顶部导航栏 --- */
+        .top-header {
+            background: linear-gradient(to bottom, #5d98d8 0%, #2b67b1 100%);
+            height: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        .top-title { font-size: 20px; font-weight: bold; letter-spacing: 1px; }
+        .logout-btn {
+            background: linear-gradient(to bottom, #7db3e8, #4f8bcf);
+            border: 1px solid #2b67b1;
+            color: white;
+            padding: 4px 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 13px;
+            text-decoration: none;
+        }
+        .logout-btn:hover { background: #3b78c2; }
+
+        /* --- 主体布局 (左侧边栏 + 右侧内容) --- */
+        .main-container {
+            display: flex;
+            flex: 1;
+            height: calc(100vh - 50px);
+        }
+
+        /* --- 左侧边栏 --- */
+        .sidebar {
+            width: 180px;
+            background: linear-gradient(to right, #eef4fb, #dce8f7);
+            border-right: 1px solid #abc5e4;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar-menu {
+            border-bottom: 1px solid #abc5e4;
+            padding: 10px 15px;
+            cursor: pointer;
+            color: #333;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            transition: background 0.2s;
+        }
+        .sidebar-menu::before {
+            content: "👤";
+            margin-right: 8px;
+            font-size: 12px;
+            color: #2b67b1;
+        }
+        .sidebar-menu:hover { background-color: #cde0f5; }
+        /* 激活状态的侧边栏菜单 */
+        .sidebar-menu.active {
+            background-color: #fff;
+            border-right: 3px solid #fff;
+            margin-right: -1px;
+            font-weight: bold;
+            color: #2b67b1;
+        }
+
+        /* --- 右侧内容区 --- */
+        .content-area {
+            flex: 1;
+            background-color: #fff;
+            padding: 20px 30px;
+            overflow-y: auto;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- 表格复刻样式 --- */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            color: #333;
+            margin-top: 10px;
+        }
+        .data-table th, .data-table td {
+            border: 1px solid #c4d7ec;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        .data-table th {
+            background-color: #f2f7fd;
+            font-weight: normal;
+            color: #333;
+            text-align: right;
+            width: 15%;
+        }
+        .data-table td { text-align: left; background-color: #fff; }
+        .data-table .center-th { text-align: center; font-weight: bold; }
+        .data-table .center-td { text-align: center; }
+        .text-red { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="top-header">
+        <div class="top-title">中国海洋大学研究生招生平台</div>
+        <a href="index.html" class="logout-btn">退出系统</a>
+    </div>
+
+    <div class="main-container">
+        
+        <div class="sidebar">
+            <div class="sidebar-menu active" id="nav-basic" onclick="switchTab('basic')">考生基础信息</div>
+            <div class="sidebar-menu" id="nav-score" onclick="switchTab('score')">初试成绩查询</div>
+            <div class="sidebar-menu" id="nav-retest" onclick="switchTab('retest')">复试信息查询</div>
+            <div class="sidebar-menu" id="nav-admit" onclick="switchTab('admit')">拟录取信息查询</div>
+        </div>
+
+        <div class="content-area">
+            
+            <div id="tab-basic" class="tab-content active">
+                <table class="data-table">
+                    <tr>
+                        <th>考生编号：</th>
+                        <td>104236371708475</td>
+                        <th>姓名：</th>
+                        <td>薛德亮</td>
+                    </tr>
+                    <tr>
+                        <th>报考专业：</th>
+                        <td colspan="3">081200|计算机科学与技术</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="tab-score" class="tab-content">
+                <table class="data-table">
+                    <tr>
+                        <th>考生编号：</th>
+                        <td>104236371708475</td>
+                        <th>姓名：</th>
+                        <td>薛德亮</td>
+                    </tr>
+                    <tr>
+                        <th>报考院系所：</th>
+                        <td colspan="3">002|信息科学与工程学部</td>
+                    </tr>
+                    <tr>
+                        <th>报考专业：</th>
+                        <td colspan="3">081200|计算机科学与技术</td>
+                    </tr>
+                    <tr>
+                        <th>报考研究方向：</th>
+                        <td colspan="3">00|不区分研究方向</td>
+                    </tr>
+                    
+                    <tr>
+                        <th class="center-th" style="text-align: center;">考试科目代码</th>
+                        <th class="center-th" colspan="2" style="text-align: center;">考试科目名称</th>
+                        <th class="center-th" style="text-align: center;">考试成绩</th>
+                    </tr>
+                    <tr>
+                        <td class="center-td">101</td>
+                        <td colspan="2" class="center-td">思想政治理论</td>
+                        <td class="center-td">65</td>
+                    </tr>
+                    <tr>
+                        <td class="center-td">201</td>
+                        <td colspan="2" class="center-td">英语（一）</td>
+                        <td class="center-td">75</td>
+                    </tr>
+                    <tr>
+                        <td class="center-td">301</td>
+                        <td colspan="2" class="center-td">数学（一）</td>
+                        <td class="center-td">125</td>
+                    </tr>
+                    <tr>
+                        <td class="center-td">408</td>
+                        <td colspan="2" class="center-td">计算机学科专业基础</td>
+                        <td class="center-td">104</td>
+                    </tr>
+                    
+                    <tr>
+                        <td colspan="3" style="text-align: right; font-weight: bold; background-color: #f9f9f9;">总分：</td>
+                        <td class="center-td text-red">369</td>
+                    </tr>
+                    <tr>
+                        <th>成绩排名：</th>
+                        <td class="text-red" style="font-weight: bold;">4</td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <th>备注：</th>
+                        <td>按专业排名</td>
+                        <td colspan="2"></td>
+                    </tr>
+
+                    <tr>
+                        <th colspan="4" class="center-th" style="text-align: center; background-color: #eef4fb;">硕士初试成绩复核申请记录</th>
+                    </tr>
+                    <tr>
+                        <th>成绩复核提示：</th>
+                        <td colspan="3" style="color: #666; font-size: 13px;">
+                            申请起止时间：2026-02-24 -- 2026-02-26，最多可申请4门科目。
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="tab-retest" class="tab-content">
+                <p style="color:#999; margin-top: 20px;">复试信息暂未公布，请耐心等待。</p>
+            </div>
+
+            <div id="tab-admit" class="tab-content">
+                <p style="color:#999; margin-top: 20px;">拟录取结果尚未发布。</p>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            document.getElementById('nav-basic').classList.remove('active');
+            document.getElementById('nav-score').classList.remove('active');
+            document.getElementById('nav-retest').classList.remove('active');
+            document.getElementById('nav-admit').classList.remove('active');
+
+            document.getElementById('tab-basic').classList.remove('active');
+            document.getElementById('tab-score').classList.remove('active');
+            document.getElementById('tab-retest').classList.remove('active');
+            document.getElementById('tab-admit').classList.remove('active');
+
+            document.getElementById('nav-' + tabName).classList.add('active');
+            document.getElementById('tab-' + tabName).classList.add('active');
+        }
+    </script>
+
+</body>
+</html>
