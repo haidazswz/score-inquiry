@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>中国海洋大学 研究生招生管理平台</title>
     <style>
-        /* --- 1. 全局基础样式 --- */
+        /* --- 全局基础样式 --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: "Microsoft YaHei", sans-serif;
@@ -14,7 +14,7 @@
             min-height: 100vh;
         }
 
-        /* --- 2. 顶部与导航栏 --- */
+        /* --- 顶部与导航栏 --- */
         .header-top {
             background: url('top_1.gif') no-repeat center top;
             background-size: cover;
@@ -58,7 +58,7 @@
 
         .nav-item span { color: white; font-size: 14px; font-weight: bold; }
 
-        /* --- 3. 公告区域 --- */
+        /* --- 公告区域 --- */
         .main-content {
             flex: 1;
             padding: 40px 0;
@@ -84,16 +84,16 @@
         .announcement-body { height: 150px; background: #fff; padding: 15px; }
 
         .urgent-link {
-            color: #e60012;
             font-size: 15px;
-            font-weight: bold;
             cursor: pointer;
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             text-decoration: none;
         }
-        .urgent-link:hover { text-decoration: underline; }
-        .urgent-link::before { content: "▶ "; font-size: 12px; }
+        .urgent-link.red { color: #e60012; font-weight: bold; }
+        .urgent-link.normal { color: #333; }
+        .urgent-link:hover { text-decoration: underline; color: #e60012; }
+        .urgent-link::before { content: "▶ "; font-size: 12px; color: #e60012; }
 
         .footer {
             background: url('gg_1.gif') no-repeat center bottom;
@@ -101,7 +101,7 @@
             height: 100px;
         }
 
-        /* --- 4. 模态弹窗 (Modal) 公用样式 --- */
+        /* --- 模态弹窗 (Modal) 公用样式 --- */
         .modal-overlay {
             display: none; 
             position: fixed; z-index: 1000;
@@ -135,7 +135,7 @@
             border-bottom: 1px solid #ddd; font-family: "SimSun", serif;
         }
 
-        /* --- 5. 登录弹窗独有样式 --- */
+        /* --- 登录弹窗样式 --- */
         .login-box { width: 450px; }
         .input-group { margin-bottom: 15px; position: relative; }
         .input-field {
@@ -160,7 +160,7 @@
         .btn-register:hover { background-color: #4a6b90; }
         .forgot-password { margin-left: 10px; font-size: 14px; color: #333; text-decoration: none; }
 
-        /* --- 6. 公告弹窗独有样式 --- */
+        /* --- 公告弹窗独有样式 --- */
         .notice-box { width: 550px; }
         .notice-title { color: #d9534f; border-bottom: 2px solid #d9534f; font-weight: bold; }
         .notice-text { font-size: 15px; line-height: 1.8; color: #333; }
@@ -173,7 +173,7 @@
         }
         .btn-confirm:hover { background-color: #c9302c; }
 
-        /* --- 7. 加载弹窗动画样式 --- */
+        /* --- 加载弹窗动画样式 --- */
         .loading-box {
             width: 320px;
             padding: 40px 20px;
@@ -193,23 +193,10 @@
         .loading-text { color: #333; font-size: 16px; font-weight: bold; }
         .loading-subtext { color: #999; font-size: 13px; margin-top: 8px; }
 
-        /* --- 8. 错误提示弹窗样式 (新增) --- */
-        .error-box {
-            width: 350px;
-            text-align: center;
-            border-top: 4px solid #d9534f;
-        }
-        .error-icon {
-            font-size: 40px;
-            color: #d9534f;
-            margin-bottom: 15px;
-        }
-        .error-msg {
-            color: #333;
-            font-size: 16px;
-            margin-bottom: 25px;
-            line-height: 1.5;
-        }
+        /* --- 错误提示弹窗样式 --- */
+        .error-box { width: 350px; text-align: center; border-top: 4px solid #d9534f; }
+        .error-icon { font-size: 40px; color: #d9534f; margin-bottom: 15px; }
+        .error-msg { color: #333; font-size: 16px; margin-bottom: 25px; line-height: 1.5; }
 
     </style>
 </head>
@@ -241,7 +228,8 @@
                 <span style="font-size: 12px; color: #666; cursor: pointer;">更多>></span>
             </div>
             <div class="announcement-body">
-                <span class="urgent-link" onclick="openNoticeModal()">关于研究生考试成绩查询相关公告</span>
+                <span class="urgent-link red" onclick="openNewNoticeModal()">关于2026年初试成绩不提供排名的重要通知（新）</span>
+                <span class="urgent-link normal" onclick="openNoticeModal()">关于研究生考试成绩查询相关公告</span>
             </div>
         </div>
     </div>
@@ -280,15 +268,29 @@
             <span class="close-btn" onclick="closeNoticeModal()">&times;</span>
             <div class="modal-title notice-title">重要公告</div>
             <div class="notice-text">
-    <p style="text-indent: 0; font-weight: bold;">各位考生：</p>
-    <p>鉴于近年屡有不法机构恶意套取、篡改考生成绩，并散布虚假排名以牟取非法利益，为切实保障广大考生的个人隐私与合法权益，我校自2024年起，研究生考试初试成绩及相关排名<span class="highlight">仅限在校内官方招生平台发布</span>。</p>
-    <p>敬请广大考生及亲友提高警惕，切勿轻信非官方渠道发布的成绩或排名信息，一切数据请一律以本系统查询结果为准。如需查询成绩，请主动点击登录系统并进行身份验证。</p>
-    <p style="margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 10px;">
-        <span class="highlight">【郑重警示】</span><br>
-        为防范信息泄露风险，请考生及亲友务必妥善保护个人隐私，<span class="highlight">切勿将成绩单或包含个人身份信息的页面截图发布于任何公共社交平台</span>。如因个人原因导致信息泄露及相关衍生风险，一切后果将由考生本人自行承担！
-    </p>
-</div>
+                <p style="text-indent: 0; font-weight: bold;">各位考生：</p>
+                <p>鉴于近年屡有不法机构恶意套取、篡改考生成绩，并散布虚假排名以牟取非法利益，为切实保障广大考生的个人隐私与合法权益，我校自2024年起，研究生考试初试成绩及相关排名<span class="highlight">仅限在校内官方招生平台发布</span>。</p>
+                <p>敬请广大考生及亲友提高警惕，切勿轻信非官方渠道发布的成绩或排名信息，一切数据请一律以本系统查询结果为准。如需查询成绩，请主动点击登录系统并进行身份验证。</p>
+                <p style="margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 10px;">
+                    <span class="highlight">【郑重警示】</span><br>
+                    为防范信息泄露风险，请考生及亲友务必妥善保护个人隐私，<span class="highlight">切勿将成绩单或包含个人身份信息的页面截图发布于任何公共社交平台</span>。如因个人原因导致信息泄露及相关衍生风险，一切后果将由考生本人自行承担！
+                </p>
+            </div>
             <button class="btn-confirm" onclick="closeNoticeModal()">我已了解</button>
+        </div>
+    </div>
+
+    <div id="newNoticeModal" class="modal-overlay" onclick="closeNewNoticeModal()">
+        <div class="modal-content notice-box" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeNewNoticeModal()">&times;</span>
+            <div class="modal-title notice-title">成绩查询重要提醒</div>
+            <div class="notice-text">
+                <p style="text-indent: 0; font-weight: bold;">再次提醒广大考生：</p>
+                <p>为切实保障考生个人信息安全，我校<span class="highlight">2026年硕士研究生初试成绩将不提供排名</span>。</p>
+                <p>请各位考生提高防范意识，<span class="highlight">切勿将自己的成绩及个人信息填写至任何非官方平台</span>或第三方估分系统。此外，我校也不会以任何形式对外发布任何相关成绩及排名的名单。</p>
+                <p>后续任何相关考务及录取通知，<span class="highlight">仅在本校研究生招生管理平台统一发布</span>。感谢广大考生的理解与配合！</p>
+            </div>
+            <button class="btn-confirm" onclick="closeNewNoticeModal()">确 认</button>
         </div>
     </div>
 
@@ -310,14 +312,20 @@
     </div>
 
     <script>
+        // 网页加载完毕后，立刻弹出【新】的公告
         window.onload = function() {
-            openNoticeModal();
+            openNewNoticeModal();
         };
 
-        // --- 弹窗开关控制 ---
+        // --- 旧公告开关 ---
         function openNoticeModal() { document.getElementById('noticeModal').style.display = 'flex'; }
         function closeNoticeModal() { document.getElementById('noticeModal').style.display = 'none'; }
 
+        // --- 新公告开关 ---
+        function openNewNoticeModal() { document.getElementById('newNoticeModal').style.display = 'flex'; }
+        function closeNewNoticeModal() { document.getElementById('newNoticeModal').style.display = 'none'; }
+
+        // --- 登录框开关 ---
         function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
         function closeLoginModal() { 
             document.getElementById('loginModal').style.display = 'none'; 
@@ -326,7 +334,7 @@
             document.getElementById('captchaInput').value = '';
         }
 
-        // 新增：打开和关闭自定义错误弹窗
+        // --- 错误提示弹窗开关 ---
         function showError(msg) {
             document.getElementById('errorMessageText').innerText = msg;
             document.getElementById('errorModal').style.display = 'flex';
@@ -335,20 +343,25 @@
             document.getElementById('errorModal').style.display = 'none';
         }
 
-        // --- 键盘回车键 (Enter) 监听 ---
+        // --- 键盘回车键 (Enter) 全局监听 ---
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Enter') {
-                // 1. 如果公告弹窗开着，回车关闭公告
+                // 如果【新】公告弹窗开着，回车关闭它
+                if (document.getElementById('newNoticeModal').style.display === 'flex') {
+                    closeNewNoticeModal();
+                    return;
+                }
+                // 如果【旧】公告弹窗开着，回车关闭它
                 if (document.getElementById('noticeModal').style.display === 'flex') {
                     closeNoticeModal();
                     return;
                 }
-                // 2. 如果错误弹窗开着，回车优先关闭错误提示
+                // 如果错误弹窗开着，回车关闭错误提示
                 if (document.getElementById('errorModal').style.display === 'flex') {
                     closeErrorModal();
                     return;
                 }
-                // 3. 如果前两者没开，且登录框开着，执行登录
+                // 如果登录框开着，执行登录
                 if (document.getElementById('loginModal').style.display === 'flex') {
                     handleLogin();
                 }
@@ -361,13 +374,11 @@
             const passwordVal = document.getElementById('passwordInput').value.trim();
             const captchaVal = document.getElementById('captchaInput').value.trim().toUpperCase();
 
-            // 检查是否漏填，呼出自定义错误弹窗
             if (accountVal === '' || passwordVal === '' || captchaVal === '') {
                 showError('请输入完整的考生账号、密码和验证码！');
                 return; 
             }
 
-            // 核心校验
             if (accountVal === '104236371708475' && passwordVal === 'Xl20011214' && captchaVal === '3EVA') {
                 
                 document.getElementById('loginModal').style.display = 'none';
@@ -379,7 +390,6 @@
                 }, randomDelay);
 
             } else {
-                // 验证失败：呼出自定义错误弹窗
                 showError('账号、密码或验证码错误，请核对后再试！');
                 document.getElementById('passwordInput').value = '';
                 document.getElementById('captchaInput').value = '';
@@ -388,5 +398,4 @@
     </script>
 
 </body>
-
 </html>
