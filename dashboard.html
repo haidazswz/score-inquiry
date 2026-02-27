@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>中国海洋大学研究生招生平台 - 成绩查询</title>
+    <link rel="icon" href="favicon.jpg" type="image/jpeg">
     <style>
         /* --- 基础重置 --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -72,7 +73,6 @@
             color: #2b67b1;
         }
         .sidebar-menu:hover { background-color: #cde0f5; }
-        /* 激活状态的侧边栏菜单 */
         .sidebar-menu.active {
             background-color: #fff;
             border-right: 3px solid #fff;
@@ -117,6 +117,58 @@
         .data-table .center-th { text-align: center; font-weight: bold; }
         .data-table .center-td { text-align: center; }
         .text-red { color: red; font-weight: bold; }
+
+        /* --- 新增：复核申请按钮样式 --- */
+        .apply-btn {
+            float: right; /* 让按钮靠右显示 */
+            background-color: #f0ad4e;
+            color: white;
+            border: 1px solid #eea236;
+            padding: 5px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+        .apply-btn:hover { background-color: #ec971f; }
+
+        /* --- 新增：自定义弹窗 (Modal) 样式 --- */
+        .modal-overlay {
+            display: none; 
+            position: fixed; z-index: 1000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            align-items: center; justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            border-radius: 4px;
+            padding: 25px 30px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.4);
+            animation: fadeIn 0.3s;
+            text-align: center;
+            width: 320px;
+            border-top: 4px solid #f0ad4e; /* 顶部橙色强调条 */
+        }
+
+        .confirm-icon { font-size: 40px; color: #f0ad4e; margin-bottom: 15px; }
+        .confirm-msg { color: #333; font-size: 16px; margin-bottom: 25px; font-weight: bold; }
+        .confirm-actions { display: flex; justify-content: center; gap: 20px; }
+        
+        .btn-cancel {
+            padding: 8px 25px; background: #e0e0e0; color: #333; 
+            border: none; border-radius: 4px; cursor: pointer; font-size: 14px;
+        }
+        .btn-cancel:hover { background: #ccc; }
+        
+        .btn-submit {
+            padding: 8px 25px; background: #2b67b1; color: white; 
+            border: none; border-radius: 4px; cursor: pointer; font-size: 14px;
+        }
+        .btn-submit:hover { background: #1a4a84; }
+
     </style>
 </head>
 <body>
@@ -203,24 +255,15 @@
                         <td colspan="3" style="text-align: right; font-weight: bold; background-color: #f9f9f9;">总分：</td>
                         <td class="center-td text-red">369</td>
                     </tr>
-                    <tr>
-                        <th>成绩排名：</th>
-                        <td class="text-red" style="font-weight: bold;">4</td>
-                        <td colspan="2"></td>
-                    </tr>
-                    <tr>
-                        <th>备注：</th>
-                        <td>按专业排名</td>
-                        <td colspan="2"></td>
-                    </tr>
-
+                    
                     <tr>
                         <th colspan="4" class="center-th" style="text-align: center; background-color: #eef4fb;">硕士初试成绩复核申请记录</th>
                     </tr>
                     <tr>
                         <th>成绩复核提示：</th>
-                        <td colspan="3" style="color: #666; font-size: 13px;">
-                            申请起止时间：2026-02-24 -- 2026-02-26，最多可申请4门科目。
+                        <td colspan="3" style="color: #666; font-size: 13px; line-height: 28px;">
+                            申请起止时间：2026-03-01 -- 2026-03-02，最多可申请4门科目。
+                            <button class="apply-btn" onclick="openConfirmModal()">添加复核申请</button>
                         </td>
                     </tr>
                 </table>
@@ -237,7 +280,19 @@
         </div>
     </div>
 
+    <div id="confirmModal" class="modal-overlay" onclick="closeConfirmModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="confirm-icon" id="modalIcon">❓</div>
+            <div class="confirm-msg" id="modalText">是否确认提交？</div>
+            <div class="confirm-actions" id="modalActions">
+                <button class="btn-cancel" onclick="closeConfirmModal()">取 消</button>
+                <button class="btn-submit" onclick="submitApplication()">确 认</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // 侧边栏切换逻辑
         function switchTab(tabName) {
             document.getElementById('nav-basic').classList.remove('active');
             document.getElementById('nav-score').classList.remove('active');
@@ -251,6 +306,38 @@
 
             document.getElementById('nav-' + tabName).classList.add('active');
             document.getElementById('tab-' + tabName).classList.add('active');
+        }
+
+        // --- 弹窗相关逻辑 ---
+        function openConfirmModal() {
+            document.getElementById('confirmModal').style.display = 'flex';
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirmModal').style.display = 'none';
+        }
+
+        // 提交复核申请的交互动画
+        function submitApplication() {
+            // 隐藏两个按钮
+            document.getElementById('modalActions').style.display = 'none';
+            // 改变图标和文字，模拟系统处理成功
+            document.getElementById('modalIcon').innerText = "✅";
+            document.getElementById('modalIcon').style.color = "#5cb85c"; // 变成绿色
+            document.getElementById('modalText').innerText = "复核申请已提交！";
+            document.getElementById('modalText').style.color = "#5cb85c";
+
+            // 1.5秒后自动关闭弹窗，并悄悄把弹窗状态重置，方便下次点击
+            setTimeout(function() {
+                closeConfirmModal();
+                setTimeout(function() {
+                    document.getElementById('modalActions').style.display = 'flex';
+                    document.getElementById('modalIcon').innerText = "❓";
+                    document.getElementById('modalIcon').style.color = "#f0ad4e";
+                    document.getElementById('modalText').innerText = "是否确认提交？";
+                    document.getElementById('modalText').style.color = "#333";
+                }, 300);
+            }, 1500);
         }
     </script>
 
