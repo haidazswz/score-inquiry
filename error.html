@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>正在加载...</title> 
+    <link rel="icon" href="logo.jpg" type="image/jpeg">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: radial-gradient(circle at center, #fdfdfd 0%, #e8e8e8 100%);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            overflow: hidden; 
+        }
+
+        #fake-server-delay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff; 
+            z-index: 9999;
+            cursor: wait; 
+        }
+
+        #error-content {
+            text-align: center;
+            transform: translateY(-10%);
+            display: none; 
+            animation: fadeIn 0.1s ease-in; 
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .warning-icon { width: 140px; height: 140px; margin-bottom: 20px; }
+        .main-message { font-size: 20px; color: #777; margin-bottom: 15px; letter-spacing: 1px; }
+        .sub-message { font-size: 15px; color: #999; margin-bottom: 35px; }
+        
+        .action-links { display: flex; justify-content: center; gap: 30px; }
+        .action-link { display: flex; align-items: center; text-decoration: none; color: #888; font-size: 16px; transition: color 0.2s; cursor: pointer; }
+        .action-link:hover { color: #555; }
+        .action-link svg { width: 18px; height: 18px; margin-right: 6px; fill: currentColor; }
+
+    </style>
+</head>
+<body>
+
+    <div id="fake-server-delay"></div>
+
+    <div id="error-content">
+        <svg class="warning-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 15 L15 80 L85 80 Z" fill="none" stroke="#d5d5d5" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+            <line x1="50" y1="35" x2="50" y2="58" stroke="#d5d5d5" stroke-width="6" stroke-linecap="round"/>
+            <circle cx="50" cy="70" r="3.5" fill="#d5d5d5"/>
+        </svg>
+
+        <div class="main-message">您当前访问的页面出错</div>
+        <div class="sub-message">提示：无效的文章参数！</div>
+
+        <div class="action-links">
+            <a href="index.html" class="action-link">
+                <svg viewBox="0 0 24 24"><path d="M12 3L4 9v12h5v-7h6v7h5V9z"/></svg>首页
+            </a>
+            <a onclick="goBackOrClose()" class="action-link">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-8 14H7v-2h4v2zm4-4H7v-2h8v2zm0-4H7V7h8v2z" opacity="0.2"/>
+                    <path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
+                </svg>关闭此页
+            </a>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            // 【核心修改】：生成 14000 毫秒(14秒) 到 16000 毫秒(16秒) 之间的随机延迟
+            const randomDelay = Math.floor(Math.random() * 2000) + 14000;
+            
+            setTimeout(function() {
+                document.getElementById('fake-server-delay').style.display = 'none';
+                document.getElementById('error-content').style.display = 'block';
+                document.title = "系统提示 - 页面出错";
+            }, randomDelay);
+        };
+
+        function goBackOrClose() {
+            if (window.history.length > 1) {
+                window.history.back(); 
+            } else {
+                window.close(); 
+            }
+        }
+    </script>
+
+</body>
+</html>

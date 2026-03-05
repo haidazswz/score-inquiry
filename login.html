@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>中国海洋大学 研究生招生管理平台</title>
+    <style>
+        /* --- 全局基础样式 --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- 顶部与导航栏 --- */
+        .header-top {
+            background: url('top_1.gif') no-repeat center top;
+            background-size: cover;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0072bc;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .blue-nav-bar {
+            width: 100%;
+            background: linear-gradient(to bottom, #32a1e1 0%, #0c76c5 100%);
+            padding: 30px 0;
+            display: flex;
+            justify-content: center;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .button-container { display: flex; gap: 50px; }
+
+        .nav-item {
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.2s;
+            width: 140px;
+            cursor: pointer;
+        }
+
+        .nav-item:hover { transform: translateY(-5px); }
+
+        .nav-item img {
+            width: 100px; height: 100px;
+            border-radius: 12px; margin-bottom: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .nav-item span { color: white; font-size: 14px; font-weight: bold; }
+
+        /* --- 公告区域 --- */
+        .main-content {
+            flex: 1;
+            padding: 40px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .announcement-box {
+            width: 600px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .announcement-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 15px;
+            background: url('gg_1.gif') repeat-x center; background-size: cover;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold; color: #333;
+        }
+
+        .announcement-body { height: 150px; background: #fff; padding: 15px; }
+
+        .urgent-link {
+            font-size: 15px;
+            cursor: pointer;
+            display: block;
+            margin-bottom: 12px;
+            text-decoration: none;
+        }
+        .urgent-link.red { color: #e60012; font-weight: bold; }
+        .urgent-link.normal { color: #333; }
+        .urgent-link:hover { text-decoration: underline; color: #e60012; }
+        .urgent-link::before { content: "▶ "; font-size: 12px; color: #e60012; }
+
+        .footer {
+            background: url('gg_1.gif') no-repeat center bottom;
+            background-size: 100% auto;
+            height: 100px;
+        }
+
+        /* --- 模态弹窗 (Modal) 公用样式 --- */
+        .modal-overlay {
+            display: none; 
+            position: fixed; z-index: 1000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            align-items: center; justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.4);
+            border-radius: 4px;
+            position: relative;
+            padding: 20px 30px;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn { from {opacity: 0; transform: translateY(-20px);} to {opacity: 1; transform: translateY(0);} }
+
+        .close-btn {
+            position: absolute; right: 15px; top: 10px;
+            color: #999; font-size: 24px; font-weight: bold; cursor: pointer;
+        }
+        .close-btn:hover { color: #000; }
+
+        .modal-title {
+            text-align: center; font-size: 24px; color: #333;
+            margin-bottom: 20px; padding-bottom: 10px;
+            border-bottom: 1px solid #ddd; font-family: "SimSun", serif;
+        }
+
+        /* --- 登录弹窗样式 --- */
+        .login-box { width: 450px; }
+        .input-group { margin-bottom: 15px; position: relative; }
+        .input-field {
+            width: 100%; padding: 10px; border: 1px solid #f8b9b7; border-radius: 2px;
+            outline: none; font-size: 14px; color: #666; background: #fff;
+        }
+        .input-field:focus { border-color: #e56c69; }
+        .captcha-row { display: flex; gap: 10px; align-items: center; }
+        .captcha-img {
+            width: 100px; height: 38px;
+            background: #eee url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="38"><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="20" fill="%23555">3EVA</text></svg>') no-repeat center;
+            border: 1px solid #ccc; cursor: pointer;
+        }
+        .action-row { display: flex; align-items: center; margin-top: 20px; gap: 10px; }
+        .btn-login {
+            flex: 1; padding: 10px; background-color: #5cb85c; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer;
+        }
+        .btn-login:hover { background-color: #4cae4c; }
+        .btn-register {
+            flex: 1; padding: 10px; background-color: #5b7ca3; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer;
+        }
+        .btn-register:hover { background-color: #4a6b90; }
+        .forgot-password { margin-left: 10px; font-size: 14px; color: #333; text-decoration: none; }
+
+        /* --- 公告弹窗独有样式 --- */
+        .notice-box { width: 550px; }
+        .notice-title { color: #d9534f; border-bottom: 2px solid #d9534f; font-weight: bold; }
+        .notice-text { font-size: 15px; line-height: 1.8; color: #333; }
+        .notice-text p { margin-bottom: 10px; text-indent: 2em; }
+        .notice-text .highlight { color: #d9534f; font-weight: bold; }
+        .btn-confirm {
+            display: block; margin: 20px auto 0; padding: 10px 30px;
+            background-color: #d9534f; color: white; border: none; border-radius: 4px;
+            font-size: 16px; cursor: pointer; transition: background 0.2s;
+        }
+        .btn-confirm:hover { background-color: #c9302c; }
+
+        /* --- 加载弹窗动画样式 --- */
+        .loading-box {
+            width: 320px;
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 4px solid #32a1e1;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #32a1e1;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px auto;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-text { color: #333; font-size: 16px; font-weight: bold; }
+        .loading-subtext { color: #999; font-size: 13px; margin-top: 8px; }
+
+        /* --- 错误提示弹窗样式 --- */
+        .error-box { width: 350px; text-align: center; border-top: 4px solid #d9534f; }
+        .error-icon { font-size: 40px; color: #d9534f; margin-bottom: 15px; }
+        .error-msg { color: #333; font-size: 16px; margin-bottom: 25px; line-height: 1.5; }
+
+    </style>
+</head>
+<body>
+
+    <div class="header-top">中国海洋大学 研究生招生管理平台</div>
+
+    <div class="blue-nav-bar">
+        <div class="button-container">
+            <a href="#" class="nav-item">
+                <img src="btn-1.jpg" alt="推免">
+                <span>推免预报名系统</span>
+            </a>
+            <div class="nav-item" onclick="openLoginModal()">
+                <img src="btn-2.jpg" alt="硕士">
+                <span>硕士考生查询系统</span>
+            </div>
+            <a href="#" class="nav-item">
+                <img src="btn-8.jpg" alt="博士">
+                <span>博士报名查询系统</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="announcement-box">
+            <div class="announcement-header">
+                <span>公告</span>
+                <span style="font-size: 12px; color: #666; cursor: pointer;">更多>></span>
+            </div>
+            <div class="announcement-body">
+                <span class="urgent-link red" onclick="openNewNoticeModal()">关于2026年初试成绩不提供排名的重要通知（新）</span>
+                <span class="urgent-link normal" onclick="openNoticeModal()">关于研究生考试成绩查询相关公告</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer"></div>
+
+    <div id="loginModal" class="modal-overlay" onclick="closeLoginModal()">
+        <div class="modal-content login-box" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeLoginModal()">&times;</span>
+            <div class="modal-title">硕士考生查询系统</div>
+            
+            <div class="input-group">
+                <input type="text" id="accountInput" class="input-field" placeholder="考生账号">
+                <span style="position: absolute; right: 10px; top: 10px; color: #999;">👤</span>
+            </div>
+            <div class="input-group">
+                <input type="password" id="passwordInput" class="input-field" placeholder="密码">
+                <span style="position: absolute; right: 30px; top: 10px; color: #999;">👁️</span>
+                <span style="position: absolute; right: 10px; top: 10px; color: #999;">🔒</span>
+            </div>
+            <div class="input-group captcha-row">
+                <input type="text" id="captchaInput" class="input-field" placeholder="验证码" style="width: 200px;">
+                <div class="captcha-img"></div>
+            </div>
+            
+            <div class="action-row">
+                <button class="btn-login" onclick="handleLogin()">登 录</button>
+                <button class="btn-register">注 册</button>
+                <a href="#" class="forgot-password">忘记密码</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="noticeModal" class="modal-overlay" onclick="closeNoticeModal()">
+        <div class="modal-content notice-box" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeNoticeModal()">&times;</span>
+            <div class="modal-title notice-title">重要公告</div>
+            <div class="notice-text">
+                <p style="text-indent: 0; font-weight: bold;">各位考生：</p>
+                <p>鉴于近年屡有不法机构恶意套取、篡改考生成绩，并散布虚假排名以牟取非法利益，为切实保障广大考生的个人隐私与合法权益，我校自2024年起，研究生考试初试成绩及相关排名<span class="highlight">仅限在校内官方招生平台发布</span>。</p>
+                <p>敬请广大考生及亲友提高警惕，切勿轻信非官方渠道发布的成绩或排名信息，一切数据请一律以本系统查询结果为准。如需查询成绩，请主动点击登录系统并进行身份验证。</p>
+                <p style="margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 10px;">
+                    <span class="highlight">【郑重警示】</span><br>
+                    为防范信息泄露风险，请考生及亲友务必妥善保护个人隐私，<span class="highlight">切勿将成绩单或包含个人身份信息的页面截图发布于任何公共社交平台</span>。如因个人原因导致信息泄露及相关衍生风险，一切后果将由考生本人自行承担！
+                </p>
+            </div>
+            <button class="btn-confirm" onclick="closeNoticeModal()">我已了解</button>
+        </div>
+    </div>
+
+    <div id="newNoticeModal" class="modal-overlay" onclick="closeNewNoticeModal()">
+        <div class="modal-content notice-box" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeNewNoticeModal()">&times;</span>
+            <div class="modal-title notice-title">成绩查询重要提醒</div>
+            <div class="notice-text">
+                <p style="text-indent: 0; font-weight: bold;">再次提醒广大考生：</p>
+                <p>为切实保障考生个人信息安全，我校<span class="highlight">2026年硕士研究生初试成绩将不提供排名</span>。</p>
+                <p>请各位考生提高防范意识，<span class="highlight">切勿将自己的成绩及个人信息填写至任何非官方平台</span>或第三方估分系统。此外，我校也不会以任何形式对外发布任何相关成绩及排名的名单。</p>
+                <p>后续任何相关考务及录取通知，<span class="highlight">仅在本校研究生招生管理平台统一发布</span>。感谢广大考生的理解与配合！</p>
+            </div>
+            <button class="btn-confirm" onclick="closeNewNoticeModal()">确 认</button>
+        </div>
+    </div>
+
+    <div id="loadingModal" class="modal-overlay" style="z-index: 1005;">
+        <div class="modal-content loading-box">
+            <div class="spinner"></div>
+            <div class="loading-text">目前查询人数过多，请稍等...</div>
+            <div class="loading-subtext">正在连接数据库，请勿刷新页面</div>
+        </div>
+    </div>
+
+    <div id="errorModal" class="modal-overlay" style="z-index: 1010;" onclick="closeErrorModal()">
+        <div class="modal-content error-box" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeErrorModal()">&times;</span>
+            <div class="error-icon">⚠️</div>
+            <div class="error-msg" id="errorMessageText">账号或密码错误，请重试。</div>
+            <button class="btn-confirm" onclick="closeErrorModal()" style="margin-top: 0; background-color: #d9534f;">确 定</button>
+        </div>
+    </div>
+
+    <script>
+        // 网页加载完毕后，立刻弹出【新】的公告
+        window.onload = function() {
+            openNewNoticeModal();
+        };
+
+        // --- 旧公告开关 ---
+        function openNoticeModal() { document.getElementById('noticeModal').style.display = 'flex'; }
+        function closeNoticeModal() { document.getElementById('noticeModal').style.display = 'none'; }
+
+        // --- 新公告开关 ---
+        function openNewNoticeModal() { document.getElementById('newNoticeModal').style.display = 'flex'; }
+        function closeNewNoticeModal() { document.getElementById('newNoticeModal').style.display = 'none'; }
+
+        // --- 登录框开关 ---
+        function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
+        function closeLoginModal() { 
+            document.getElementById('loginModal').style.display = 'none'; 
+            document.getElementById('accountInput').value = '';
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('captchaInput').value = '';
+        }
+
+        // --- 错误提示弹窗开关 ---
+        function showError(msg) {
+            document.getElementById('errorMessageText').innerText = msg;
+            document.getElementById('errorModal').style.display = 'flex';
+        }
+        function closeErrorModal() {
+            document.getElementById('errorModal').style.display = 'none';
+        }
+
+        // --- 键盘回车键 (Enter) 全局监听 ---
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                // 如果【新】公告弹窗开着，回车关闭它
+                if (document.getElementById('newNoticeModal').style.display === 'flex') {
+                    closeNewNoticeModal();
+                    return;
+                }
+                // 如果【旧】公告弹窗开着，回车关闭它
+                if (document.getElementById('noticeModal').style.display === 'flex') {
+                    closeNoticeModal();
+                    return;
+                }
+                // 如果错误弹窗开着，回车关闭错误提示
+                if (document.getElementById('errorModal').style.display === 'flex') {
+                    closeErrorModal();
+                    return;
+                }
+                // 如果登录框开着，执行登录
+                if (document.getElementById('loginModal').style.display === 'flex') {
+                    handleLogin();
+                }
+            }
+        });
+
+        // --- 带有验证逻辑的登录处理 ---
+        function handleLogin() {
+            const accountVal = document.getElementById('accountInput').value.trim();
+            const passwordVal = document.getElementById('passwordInput').value.trim();
+            const captchaVal = document.getElementById('captchaInput').value.trim().toUpperCase();
+
+            if (accountVal === '' || passwordVal === '' || captchaVal === '') {
+                showError('请输入完整的考生账号、密码和验证码！');
+                return; 
+            }
+
+            if (accountVal === '104236371708475' && passwordVal === 'Xl20011214' && captchaVal === '3EVA') {
+                
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('loadingModal').style.display = 'flex';
+
+                const randomDelay = Math.floor(Math.random() * 2000) + 5000;
+                setTimeout(function() {
+                    window.location.href = 'dashboard.html';
+                }, randomDelay);
+
+            } else {
+                showError('账号、密码或验证码错误，请核对后再试！');
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('captchaInput').value = '';
+            }
+        }
+    </script>
+
+</body>
+</html>
