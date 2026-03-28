@@ -2,179 +2,424 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>全国硕士生招生复试调剂服务系统</title>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <title>中国海洋大学研究生招生信息网</title>
+    <link rel="icon" href="logo.jpg" type="image/jpeg">
     <style>
-        /* 基础重置 */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
-        body { background-color: #f5f5f5; color: #333; }
-
-        /* 顶部蓝色导航栏 */
-        .navbar {
-            background-color: #1886cc; 
-            color: white;
-            padding: 12px 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 16px;
-        }
-        .navbar .title-group { display: flex; align-items: center; gap: 8px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Microsoft YaHei", STHeiti, sans-serif; background-color: #f0f3f8; color: #333; }
         
-        /* 右侧图标容器 */
-        .navbar .icons { 
-            display: flex; 
-            align-items: center;
-            gap: 15px; 
+        /* --- 顶部横幅 --- */
+        .top-banner { 
+            background: url('headbg.png') no-repeat center center;
+            background-size: cover; 
+            height: 130px; 
+            box-shadow: inset 0 -2px 5px rgba(0,0,0,0.1);
         }
         
-        /* 极简 SVG 图标样式 */
-        .svg-icon {
-            width: 20px;
-            height: 20px;
-            stroke: white; /* 线条颜色为白色 */
-            stroke-width: 1.5; /* 线条粗细 */
-            fill: none; /* 内部不填充颜色 */
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        /* 主体内容容器 */
-        .container { padding: 20px 15px; }
-
-        /* 页面标题 */
-        .page-title { text-align: center; font-size: 18px; font-weight: bold; margin-bottom: 20px; }
-
-        /* 考生信息行 */
-        .user-info {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            font-size: 15px;
-            margin-bottom: 20px;
-        }
-
-        /* 待录取通知卡片 */
-        .notice-card {
-            background-color: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            padding: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        .header-content { 
+            width: 80%; min-width: 1000px; margin: 0 auto; height: 100%; 
+            display: flex; align-items: center; justify-content: space-between; 
         }
         
-        /* 卡片头部内容 */
-        .card-header-text { font-size: 15px; line-height: 1.5; margin-bottom: 10px; }
-        .tag-pending {
-            color: #009688; 
-            background-color: #e0f2f1; 
-            padding: 2px 4px;
-            font-size: 13px;
-            border-radius: 2px;
-            margin-right: 5px;
-        }
+        .header-left { display: flex; align-items: center; }
+        .site-logo { height: 60px; width: auto; filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.2)); }
+        .vertical-line { height: 40px; width: 1px; background-color: rgba(255, 255, 255, 0.5); margin: 0 20px; }
+        .header-title-link { color: #ffffff; font-size: 34px; font-family: "Microsoft YaHei", sans-serif; text-decoration: none; letter-spacing: 2px; text-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: opacity 0.2s; }
+        .header-title-link:hover { opacity: 0.8; }
+
+        /* --- 头部右侧：搜索框 --- */
+        .header-search { display: flex; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .search-input { width: 160px; height: 32px; padding: 0 10px; border: none; outline: none; font-size: 14px; color: #333; }
+        .search-input::placeholder { color: #999; }
+        .search-btn { width: 40px; height: 32px; background-color: #e56a39; border: none; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: background 0.2s; }
+        .search-btn:hover { background-color: #ce582c; }
+        .search-btn img { width: 16px; height: 16px; object-fit: contain; }
         
-        /* 发送时间 */
-        .send-time { color: #999; font-size: 13px; margin-bottom: 15px; }
+        /* --- 导航栏 --- */
+        .nav { background-color: #003366; width: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .nav-inner { width: 80%; min-width: 1000px; margin: 0 auto; display: flex; }
+        .nav a { color: white; text-decoration: none; font-size: 18px; padding: 15px 30px; transition: background 0.3s; }
+        .nav a:hover, .nav a.active { background-color: #00509e; }
+        
+        /* --- 轮播图区域 --- */
+        .carousel-container {
+            width: 100%; min-width: 1000px; margin: 0; position: relative; overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15); background-color: #fff;
+        }
+        .carousel-wrapper { display: flex; width: 300%; transition: transform 0.6s ease-in-out; }
+        .carousel-slide { width: 33.33333%; }
+        .carousel-slide img { width: 100%; display: block; }
+        
+        .carousel-arrow {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.3); color: white; border: none;
+            width: 50px; height: 80px; cursor: pointer; font-size: 30px;
+            display: flex; justify-content: center; align-items: center;
+            transition: all 0.3s; z-index: 10; opacity: 0; 
+        }
+        .carousel-container:hover .carousel-arrow { opacity: 1; }
+        .carousel-arrow:hover { background-color: rgba(0, 0, 0, 0.7); }
+        .carousel-arrow.prev { left: 0; border-radius: 0 4px 4px 0; }
+        .carousel-arrow.next { right: 0; border-radius: 4px 0 0 4px; }
 
-        /* 分割线 */
-        .divider { border-top: 1px solid #eee; margin: 0 -15px 15px -15px; }
-
-        /* 卡片内部正文 */
-        .card-inner-title { font-size: 16px; font-weight: bold; margin-bottom: 10px; }
-        .card-body-text { font-size: 15px; line-height: 1.6; color: #444; }
-
-        /* 通知列表按钮 */
-        .btn-list {
-            display: block;
+        /* ================= 浅蓝背景区 (通知与导航) ================= */
+        .main-wrapper {
             width: 100%;
-            padding: 12px 0;
-            text-align: center;
-            background-color: white;
-            color: #1886cc;
-            border: 1px solid #1886cc;
-            border-radius: 4px;
-            font-size: 16px;
-            text-decoration: none;
-            margin-top: 20px;
+            background: url('m1.jpg') no-repeat center top;
+            background-size: cover; 
+            padding: 40px 0 60px 0; 
         }
 
-        /* 底部版权信息 */
-        .footer {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #999;
-            font-size: 12px;
-            padding: 20px 0;
-            margin-top: 40px;
+        .main-container { 
+            width: 80%; min-width: 1000px; margin: 0 auto; 
+            display: flex; gap: 30px; 
         }
         
-        /* 自定义图片图标样式控制 */
-        .custom-icon {
-            width: 18px;
-            height: 18px;
-            object-fit: contain;
+        .content-left { 
+            flex: 7; background: rgba(255, 255, 255, 0.96); 
+            padding: 25px 35px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); border-radius: 2px;
         }
-        .footer-icon {
-            width: 14px;
-            height: 14px;
-            margin-right: 5px;
+        
+        .section-header { display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 12px; margin-bottom: 10px; }
+        .section-title { font-size: 22px; font-weight: bold; color: #333; }
+        .section-more { font-size: 15px; color: #888; text-decoration: none; transition: color 0.2s; }
+        .section-more:hover { color: #497ebf; }
+
+        .news-item { display: flex; align-items: center; padding: 20px 0; border-bottom: 1px solid #f0f0f0; text-decoration: none; transition: background 0.2s; }
+        .news-item:hover { background-color: #fafbfc; }
+        .news-item:last-child { border-bottom: none; }
+        
+        .news-date-box { background-color: #497ebf; color: white; text-align: center; border-radius: 4px; padding: 6px 12px; margin-right: 25px; min-width: 75px; display: flex; flex-direction: column; justify-content: center; }
+        .news-date-year { font-size: 14px; opacity: 0.9; margin-bottom: 2px; }
+        .news-date-md { font-size: 20px; font-weight: bold; letter-spacing: 1px; }
+        
+        .news-text { font-size: 18px; color: #333; font-weight: bold; flex: 1; transition: color 0.2s; line-height: 1.6; }
+        .news-item:hover .news-text { color: #497ebf; }
+
+        .content-right { flex: 3; display: flex; flex-direction: column; gap: 30px; }
+        .sidebar-box { background: rgba(255, 255, 255, 0.96); padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); border-radius: 2px; }
+        .sidebar-title { font-size: 20px; font-weight: bold; color: #333; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #f0f0f0; }
+        .sidebar-btn { display: flex; align-items: center; justify-content: center; background-color: #5585c5; color: white; text-decoration: none; padding: 14px 0; margin-bottom: 12px; border-radius: 3px; font-size: 18px; transition: background 0.2s, transform 0.1s; box-shadow: 0 2px 5px rgba(85, 133, 197, 0.3); }
+        .sidebar-btn:last-child { margin-bottom: 0; }
+        .sidebar-btn:hover { background-color: #416b9e; transform: translateY(-1px); box-shadow: 0 4px 8px rgba(85, 133, 197, 0.4); }
+        .sidebar-btn svg { width: 20px; height: 20px; margin-right: 12px; fill: currentColor; }
+
+        /* ================= 纯白背景区 (硕士与博士招生) ================= */
+        .admissions-wrapper {
+            width: 100%; background-color: #ffffff; padding: 50px 0; 
         }
+
+        .admissions-container { 
+            width: 80%; min-width: 1000px; margin: 0 auto; display: flex; gap: 20px; 
+        }
+        
+        .admissions-box { flex: 1; display: flex; flex-direction: column; }
+        .admissions-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; }
+        .admissions-title { font-size: 26px; font-weight: bold; color: #333; }
+        .admissions-more { font-size: 16px; color: #888; text-decoration: none; transition: color 0.2s; }
+        .admissions-more:hover { color: #497ebf; }
+
+        .admissions-body { display: flex; gap: 30px; }
+        .admissions-img { width: 210px; height: auto; border-radius: 2px; object-fit: cover; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .admissions-list { flex: 1; list-style: none; display: flex; flex-direction: column; gap: 22px; padding-top: 5px; }
+        .admissions-list li { display: flex; align-items: flex-start; }
+        .admissions-list li::before {
+            content: ">"; color: #e56a39; font-weight: bold; font-family: "SimSun", serif; 
+            font-size: 20px; margin-right: 12px; line-height: 1.2;
+        }
+        .admissions-list a {
+            text-decoration: none; color: #444; font-size: 18px; transition: color 0.2s; 
+            display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 95%; line-height: 1.2;
+        }
+        .admissions-list a:hover { color: #497ebf; }
+
+        /* ================= 底部三列信息区 ================= */
+        .info-wrapper {
+            width: 100%;
+            background: url('new_bottom_bg.jpg') no-repeat center bottom; 
+            background-size: cover; 
+            padding: 50px 0 80px 0; 
+        }
+
+        .info-container { 
+            width: 80%; min-width: 1000px; margin: 0 auto; 
+            display: flex; gap: 20px; 
+        }
+        
+        .info-column { flex: 1; display: flex; flex-direction: column; }
+        
+        .info-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 15px; }
+        .info-title { font-size: 26px; font-weight: bold; color: #333; }
+        .info-more { font-size: 16px; color: #888; text-decoration: none; transition: color 0.2s; }
+        .info-more:hover { color: #497ebf; }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.96); 
+            padding: 25px 30px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06); 
+            border-radius: 4px;
+            flex: 1; 
+        }
+
+        .info-list { list-style: none; display: flex; flex-direction: column; gap: 24px; }
+        .info-list li { display: flex; align-items: flex-start; }
+        .info-list li::before {
+            content: ">"; color: #e56a39; font-weight: bold; font-family: "SimSun", serif; 
+            font-size: 20px; margin-right: 12px; line-height: 1.2;
+        }
+        .info-list a {
+            text-decoration: none; color: #444; font-size: 18px; transition: color 0.2s; 
+            display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 95%; line-height: 1.2;
+        }
+        .info-list a:hover { color: #497ebf; }
+
+        .data-group { margin-bottom: 35px; }
+        .data-group:last-child { margin-bottom: 0; }
+        .data-title { font-size: 18px; color: #004b87; font-weight: bold; margin-bottom: 20px; }
+        .data-links { display: flex; justify-content: space-between; padding-left: 10px; }
+        .data-links a { text-decoration: none; color: #333; font-size: 18px; transition: color 0.2s; cursor: pointer; }
+        .data-links a:hover { color: #e56a39; }
+
+        /* --- 底部 --- */
+        .footer { background: #2b2b2b; color: #aaa; text-align: center; padding: 40px 0; font-size: 15px; line-height: 2; }
     </style>
 </head>
 <body>
 
-    <div class="navbar">
-        <div class="title-group">
-            <img src="favicon.ico" class="custom-icon" alt="icon">
-            <span>全国硕士生招生复试调剂服务系统</span>
-        </div>
-        <div class="icons">
-            <svg class="svg-icon" viewBox="0 0 24 24">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-            <svg class="svg-icon" viewBox="0 0 24 24">
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
+    <div class="top-banner">
+        <div class="header-content">
+            <div class="header-left">
+                <img src="logo1.png" alt="中国海洋大学" class="site-logo">
+                <div class="vertical-line"></div>
+                <a href="#" class="header-title-link">研究生招生信息网</a>
+            </div>
+            <div class="header-search">
+                <input type="text" placeholder="请输入关键字" class="search-input">
+                <button class="search-btn">
+                    <img src="sous.png" alt="搜索">
+                </button>
+            </div>
         </div>
     </div>
 
-    <div class="container">
-        <div class="page-title">一志愿待录取通知</div>
-        
-        <div class="user-info">
-            <span>姓名：薛德亮</span>
-            <span>准考证号：104236371708475</span>
+    <div class="nav">
+        <div class="nav-inner">
+            <a href="#" class="active">网站首页</a>
+            <a href="login.html">报名系统</a>
+            <a href="error.html">硕士招生</a>
+            <a href="error.html">博士招生</a>
+            <a href="error.html">规章制度</a>
+            <a href="error.html">下载中心</a>
+            <a href="error.html">联系我们</a>
         </div>
+    </div>
 
-        <div class="notice-card">
-            <div class="card-header-text">
-                <span class="tag-pending">待录取通知</span>
-                (10423)中国海洋大学 - (002)信息与控制工程学部 - (081200)计算机科学与技术 - 不区分专业方向 - (1)全日制
+    <div class="carousel-container">
+        <div class="carousel-wrapper" id="carouselWrapper">
+            <div class="carousel-slide"><img src="list1_banner.jpg" alt="欢迎报考中国海洋大学研究生"></div>
+            <div class="carousel-slide"><img src="list2_banner.jpg" alt="耕海问道 研途逐光"></div>
+            <div class="carousel-slide"><img src="list3_banner.jpg" alt="海纳百川 取则行远"></div>
+        </div>
+        <button class="carousel-arrow prev" onclick="prevSlide()">&#10094;</button>
+        <button class="carousel-arrow next" onclick="nextSlide()">&#10095;</button>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="main-container">
+            <div class="content-left">
+                <div class="section-header">
+                    <div class="section-title">通知公告</div>
+                    <a href="error.html" class="section-more">查看更多</a>
+                </div>
+                <div class="news-list-new">
+                    <a href="article_1.html" class="news-item">
+                        <div class="news-date-box"><div class="news-date-year">2026</div><div class="news-date-md">03-04</div></div>
+                        <div class="news-text">关于延长2026年博士研究生报名时间的通知</div>
+                    </a>
+                    <a href="article_2.html" class="news-item">
+                        <div class="news-date-box"><div class="news-date-year">2026</div><div class="news-date-md">02-26</div></div>
+                        <div class="news-text" style="color: #497ebf;">中国海洋大学2026年硕士研究生招生考试（初试）成绩查询及成绩复核通知</div>
+                    </a>
+                    <a href="error.html" class="news-item">
+                        <div class="news-date-box"><div class="news-date-year">2026</div><div class="news-date-md">01-28</div></div>
+                        <div class="news-text">各单位2026年博士招生工作实施细则</div>
+                    </a>
+                    <a href="error.html" class="news-item">
+                        <div class="news-date-box"><div class="news-date-year">2026</div><div class="news-date-md">01-22</div></div>
+                        <div class="news-text">崂山国家实验室-中国海洋大学2026年联合培养科研经费博士研究生专项计划招生章程</div>
+                    </a>
+                    <a href="error.html" class="news-item">
+                        <div class="news-date-box"><div class="news-date-year">2026</div><div class="news-date-md">01-22</div></div>
+                        <div class="news-text">关于报考中国海洋大学2026年“少数民族高层次骨干人才计划”博士研究生有关事项的说明</div>
+                    </a>
+                </div>
             </div>
-            <div class="send-time">发送时间：2026-03-27 17:25:23</div>
-            
-            <div class="divider"></div>
-            
-            <div class="card-inner-title">一志愿待录取通知</div>
-            <div class="card-body-text">
-                请及时关注中国海洋大学研究生招生信息网相关通知。
+
+            <div class="content-right">
+                <div class="sidebar-box">
+                    <div class="sidebar-title">报考指南</div>
+                    <a href="error.html" class="sidebar-btn"><svg viewBox="0 0 24 24"><path d="M14,2H6A2,2,0,0,0,4,4V20a2,2,0,0,0,2,2H18a2,2,0,0,0,2-2V8ZM13,3.5L18.5,9H13Z"/></svg>招生章程</a>
+                    <a href="error.html" class="sidebar-btn"><svg viewBox="0 0 24 24"><path d="M3,3H10V10H3ZM14,3H21V10H14ZM3,14H10V21H3ZM14,14H21V21H14Z"/></svg>专业目录</a>
+                    <a href="error.html" class="sidebar-btn"><svg viewBox="0 0 24 24"><path d="M4 4h16v2H4zm0 4h16v2H4zm0 4h16v2H4zm0 4h10v2H4z"/></svg>考试大纲</a>
+                    <a href="error.html" class="sidebar-btn"><svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>学制学费</a>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">系统导航</div>
+                    <a href="error.html" class="sidebar-btn"><svg viewBox="0 0 24 24"><path d="M12 2L2 20h20L12 2zm0 4.5l5.5 10h-11L12 6.5z"/></svg>夏令营报名</a>
+                    <a href="error.html" class="sidebar-btn"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>推免报名</a>
+                    <a href="login.html" class="sidebar-btn"><svg viewBox="0 0 24 24"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72l5 2.73 5-2.73v3.72z"/></svg>硕士招生</a>
+                    <a href="error.html" class="sidebar-btn"><svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>博士招生</a>
+                </div>
             </div>
         </div>
+    </div>
 
-        <a href="#" class="btn-list">通知列表</a>
+    <div class="admissions-wrapper">
+        <div class="admissions-container">
+            <div class="admissions-box">
+                <div class="admissions-header">
+                    <div class="admissions-title">硕士招生</div>
+                    <a href="error.html" class="admissions-more">查看更多</a>
+                </div>
+                <div class="admissions-body">
+                    <img src="sszs.jpg" alt="硕士招生海报" class="admissions-img">
+                    <ul class="admissions-list">
+                        <li><a href="error.html">中国海洋大学2026年面向香港、澳门、台湾地区招收...</a></li>
+                        <li><a href="error.html">中国海洋大学2026年硕士研究生招生章程</a></li>
+                        <li><a href="error.html">中国海洋大学2026年硕士研究生招生专业目录</a></li>
+                        <li><a href="error.html">中国海洋大学2026年硕士招生自命题科目考试大纲</a></li>
+                        <li><a href="error.html">中国海洋大学2025年硕士研究生招生章程</a></li>
+                        <li><a href="error.html">中国海洋大学2025年硕士研究生招生专业目录</a></li>
+                        <li><a href="error.html">中国海洋大学2025年硕士招生自命题科目考试大纲</a></li>
+                        <li><a href="error.html">中国海洋大学2024年硕士招生自命题科目考试大纲</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="admissions-box">
+                <div class="admissions-header">
+                    <div class="admissions-title">博士招生</div>
+                    <a href="error.html" class="admissions-more">查看更多</a>
+                </div>
+                <div class="admissions-body">
+                    <img src="bszs.jpg" alt="博士招生海报" class="admissions-img">
+                    <ul class="admissions-list">
+                        <li><a href="error.html">中国海洋大学2026年博士研究生招生专业目录</a></li>
+                        <li><a href="error.html">中国海洋大学2026年博士研究生招生章程</a></li>
+                        <li><a href="error.html">中国海洋大学2026年面向香港、澳门、台湾地区招收...</a></li>
+                        <li><a href="error.html">中国海洋大学2025年博士研究生招生章程</a></li>
+                        <li><a href="error.html">中国海洋大学2025年博士研究生招生专业目录</a></li>
+                        <li><a href="error.html">中国海洋大学2024年博士研究生招生专业目录</a></li>
+                        <li><a href="error.html">中国海洋大学2024年博士研究生招生简章</a></li>
+                        <li><a href="error.html">中国海洋大学2023年博士研究生招生简章</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-wrapper">
+        <div class="info-container">
+            <div class="info-column">
+                <div class="info-header">
+                    <div class="info-title">政策文件</div>
+                    <a href="#" class="info-more">查看更多</a>
+                </div>
+                <div class="info-card">
+                    <ul class="info-list">
+                        <li><a href="error.html">解读《刑法修正案（九）》</a></li>
+                        <li><a href="error.html">国家教育考试违规处理办法</a></li>
+                        <li><a href="error.html">2026年全国硕士研究生招生工作管理规定</a></li>
+                        <li><a href="error.html">中国海洋大学研究生招生体检标准</a></li>
+                        <li><a href="error.html">中国海洋大学研究生资助与奖励办法</a></li>
+                        <li><a href="error.html">中国海洋大学研究生助学金管理办法</a></li>
+                        <li><a href="error.html">中国海洋大学研究生学业奖学金管理办法</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="info-column">
+                <div class="info-header">
+                    <div class="info-title">公开公示</div>
+                    <a href="error.html" class="info-more">查看更多</a>
+                </div>
+                <div class="info-card">
+                    <ul class="info-list">
+                        <li><a href="error.html">中国海洋大学研究生招生申诉渠道</a></li>
+                        <li><a href="error.html">中国海洋大学2026年推荐免试研究生拟录取名单公...</a></li>
+                        <li><a href="error.html">中国海洋大学2025年博士研究生拟录取名单公示（...</a></li>
+                        <li><a href="error.html">中国海洋大学2025年港澳台研究生拟录取名单公示...</a></li>
+                        <li><a href="error.html">中国海洋大学2025年硕士研究生拟录取名单公示（...</a></li>
+                        <li><a href="error.html">中国海洋大学2025年推免拟录取名单公示（公示已...</a></li>
+                        <li><a href="error.html">2024年博士研究生拟录取名单公示（公示已结束）</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="info-column">
+                <div class="info-header">
+                    <div class="info-title">往年数据</div>
+                    <a href="error.html" class="info-more">查看更多</a>
+                </div>
+                <div class="info-card">
+                    <div class="data-group">
+                        <div class="data-title">硕士分数线</div>
+                        <div class="data-links">
+                            <a title="2025年硕士研究生考生进入复试的初试成绩要求">2025年硕...</a>
+                            <a title="2024年硕士研究生考生进入复试的初试成绩要求">2024年硕...</a>
+                            <a title="2023年硕士研究生考生进入复试的初试成绩要求">2023年硕...</a>
+                            <a>更多...</a>
+                        </div>
+                    </div>
+                    <div class="data-group">
+                        <div class="data-title">硕士自命题（2022年及以后不再提供）</div>
+                        <div class="data-links">
+                            <a title="2021年硕士招生自命题科目试题">2021年硕...</a>
+                            <a title="2020年硕士招生自命题科目试题">2020年硕...</a>
+                            <a title="2019年硕士招生自命题科目试题">2019年硕...</a>
+                            <a>更多...</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 
     <div class="footer">
-        <img src="favicon.ico" class="footer-icon" alt="icon"> 
-        <span>中国研究生招生信息网 &nbsp;&nbsp; 客服热线：010-67410388</span>
+        版权所有 © 中国海洋大学研究生院<br>
+        鲁ICP备05002008号 | 建议使用 Chrome 或 Edge 浏览器访问本系统
     </div>
+
+    <script>
+        let currentSlide = 0; 
+        const totalSlides = 3; 
+        const wrapper = document.getElementById('carouselWrapper');
+        
+        function updateCarousel() {
+            wrapper.style.transform = `translateX(-${currentSlide * 33.33333}%)`;
+        }
+        
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateCarousel();
+            resetTimer(); 
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateCarousel();
+            resetTimer(); 
+        }
+        
+        let slideInterval = setInterval(nextSlide, 4000);
+        
+        function resetTimer() {
+            clearInterval(slideInterval);
+            slideInterval = setInterval(nextSlide, 4000);
+        }
+    </script>
 
 </body>
 </html>
